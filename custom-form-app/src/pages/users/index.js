@@ -5,9 +5,8 @@ import axios from '@/lib/axios'
 import ButtonEdit from '@/components/ButtonEdit'
 import Link from 'next/link'
 
-
 const Users = () => {
-    const { data: userlist, error, mutate } = useSWR('/api/user', () =>
+    const { data: userlist } = useSWR('/api/user', () =>
         axios
             .get('/api/user')
             .then(res => res.data)
@@ -23,7 +22,6 @@ const Users = () => {
                     User List
                 </h2>
             }>
-
             <Head>
                 <title>Custom Form - User List</title>
             </Head>
@@ -35,31 +33,45 @@ const Users = () => {
                             <div className="relative overflow-x-auto">
                                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                        <tr>
-                                            <th scope="col" className="px-6 py-3">
+                                        <tr key="table-head">
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-3">
                                                 Name
                                             </th>
-                                            <th scope="col" className="px-6 py-3">
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-3">
                                                 Email
                                             </th>
-                                            <th scope="col" className="px-6 py-3">
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-3">
                                                 Role
                                             </th>
-                                            <th scope="col" className="px-6 py-3">
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-3">
                                                 Status
                                             </th>
-                                            <th scope="col" className="px-6 py-3">
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-3">
                                                 Action
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        {userlist && userlist.data.map(user => (
-                                            <>
-                                                <tr key={user.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <tbody key="table-body">
+                                        {userlist &&
+                                            userlist.data.map(user => (
+                                                <tr
+                                                    key={user?.id}
+                                                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                                    <td
+                                                        scope="row"
+                                                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                         {user?.name}
-                                                    </th>
+                                                    </td>
                                                     <td className="px-6 py-4">
                                                         {user?.email}
                                                     </td>
@@ -71,17 +83,18 @@ const Users = () => {
                                                     </td>
                                                     <td className="px-6 py-4">
                                                         <ButtonEdit>
-                                                            <Link href={`/users/${user?.id}`}>
+                                                            <Link
+                                                                key={user?.name}
+                                                                href={`/users/${user?.id}`}>
                                                                 Edit User
                                                             </Link>
                                                         </ButtonEdit>
                                                     </td>
-                                                </tr></>
-                                        ))}
+                                                </tr>
+                                            ))}
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
                     </div>
                 </div>
