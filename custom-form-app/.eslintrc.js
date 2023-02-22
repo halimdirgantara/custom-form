@@ -9,6 +9,7 @@ module.exports = {
     },
     extends: [
         'eslint:recommended',
+        'standard',
         'plugin:react/recommended',
         'plugin:prettier/recommended',
     ],
@@ -18,6 +19,7 @@ module.exports = {
         },
         ecmaVersion: 2020,
         requireConfigFile: false,
+        source:module
     },
     plugins: ['react', '@next/eslint-plugin-next', 'prettier'],
     rules: {
