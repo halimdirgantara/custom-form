@@ -2,19 +2,16 @@ import AppLayout from '@/components/Layouts/AppLayout'
 import Head from 'next/head'
 import useSWR from 'swr'
 import axios from '@/lib/axios'
-// import ButtonEdit from '@/components/ButtonEdit'
-// import Link from 'next/link'
 import Input from '@/components/Input'
 import InputError from '@/components/InputError'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { useEffect } from 'react'
 
 const UserPage = () => {
     const router = useRouter()
     const { id } = router.query
 
-    const { data: userdata, error } = useSWR(`/api/user/${id}`, () =>
+    const { data: userdata } = useSWR(`/api/user/${id}`, () =>
         axios
             .get(`/api/user/${id}`)
             .then(res => res.data)
@@ -22,15 +19,16 @@ const UserPage = () => {
                 if (error.response.status !== 409) throw error
             }),
     )
+
+    console.log(userdata)
+
     if (!userdata) {
         return <div>Loading</div>
     }
-
-    console.log(userdata)
     const [name, setName] = useState(userdata?.name)
-    const [email, setEmail] = useState('')
-    const [role, setRole] = useState('')
-    const [status, setStatus] = useState('')
+    const [email, setEmail] = useState(userdata?.email)
+    const [role, setRole] = useState(userdata?.role)
+    const [status, setStatus] = useState(userdata?.status)
     const [password, setPassword] = useState('')
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
     const [errors, setErrors] = useState({})
@@ -51,6 +49,7 @@ const UserPage = () => {
     const handleEditButtonClick = () => {
         setIsDisabled(!isDisabled)
     }
+
 
     return (
         <AppLayout
@@ -199,11 +198,10 @@ const UserPage = () => {
                                         </button>
                                         <button
                                             type="submit"
-                                            className={`ml-4 px-4 py-2 text-sm font-medium text-white rounded-md ${
-                                                isDisabled
+                                            className={`ml-4 px-4 py-2 text-sm font-medium text-white rounded-md ${isDisabled
                                                     ? 'bg-gray-500 cursor-not-allowed'
                                                     : 'bg-green-500 hover:bg-green-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2'
-                                            }`}
+                                                }`}
                                             disabled={isDisabled}>
                                             Save
                                         </button>
